@@ -1,0 +1,13 @@
+# Backend
+ecommerce-backend/target/
+ecommerce-backend/.idea/
+ecommerce-backend/*.iml
+
+# Frontend
+ecommerce-frontend/node_modules/
+ecommerce-frontend/.next/
+ecommerce-frontend/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
