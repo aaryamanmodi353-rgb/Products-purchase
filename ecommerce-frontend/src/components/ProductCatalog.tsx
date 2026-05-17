@@ -19,7 +19,7 @@ export default function ProductCatalog() {
   const [error, setError] = useState<string | null>(null);
 
   const fetchProducts = () => {
-    fetch(`${API_URL}/api/products')
+    fetch(`${API_URL}/api/products`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch products');
         return res.json();
