@@ -70,11 +70,12 @@ export default function CartPage() {
 
       if (!res.ok) {
         let msg = "Checkout failed";
+        const text = await res.text();
         try {
-          const data = await res.json();
+          const data = JSON.parse(text);
           msg = data.error || data.message || msg;
         } catch {
-          msg = await res.text() || msg;
+          msg = text || msg;
         }
         throw new Error(msg);
       }
