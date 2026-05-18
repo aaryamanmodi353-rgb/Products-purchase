@@ -29,6 +29,14 @@ public class OrderService {
 
     @Transactional
     public OrderDto.OrderResponse createOrder(String userEmail, OrderDto.CreateOrderRequest request) {
+        // Defensive validation
+        if (request.getPaymentMethod() == null) {
+            throw new RuntimeException("Payment method is required");
+        }
+        if (request.getItems() == null || request.getItems().isEmpty()) {
+            throw new RuntimeException("Order must contain at least one item");
+        }
+
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

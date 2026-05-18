@@ -52,6 +52,23 @@ export default function ProductPage() {
       return;
     }
 
+    // Validate card fields for card payments
+    if (paymentMethod === "CREDIT_CARD" || paymentMethod === "DEBIT_CARD") {
+      const cleanCard = cardNumber.replace(/\s/g, "");
+      if (cleanCard.length < 13 || cleanCard.length > 19) {
+        setError("Please enter a valid card number");
+        return;
+      }
+      if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+        setError("Please enter a valid expiry date (MM/YY)");
+        return;
+      }
+      if (cardCvv.length < 3) {
+        setError("Please enter a valid CVV");
+        return;
+      }
+    }
+
     setLoading(true);
     setError("");
 
