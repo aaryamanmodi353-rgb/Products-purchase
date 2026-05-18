@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Package, XCircle, CheckCircle, Clock, X } from "lucide-react";
@@ -31,7 +31,7 @@ const STATUS_STYLES: Record<string, { bg: string; text: string; icon: any }> = {
   CANCELLED: { bg: "bg-red-50 dark:bg-red-900/30", text: "text-red-700 dark:text-red-300", icon: XCircle },
 };
 
-export default function OrdersPage() {
+function OrdersContent() {
   const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -225,5 +225,19 @@ export default function OrdersPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600" />
+        </div>
+      }
+    >
+      <OrdersContent />
+    </Suspense>
   );
 }
