@@ -11,7 +11,6 @@ import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +26,6 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-    @Transactional
     public OrderDto.OrderResponse createOrder(String userEmail, OrderDto.CreateOrderRequest request) {
         // Defensive validation
         if (request.getPaymentMethod() == null) {
@@ -88,8 +86,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public OrderDto.OrderResponse cancelOrder(String userEmail, Long orderId, String reason) {
+    public OrderDto.OrderResponse cancelOrder(String userEmail, String orderId, String reason) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

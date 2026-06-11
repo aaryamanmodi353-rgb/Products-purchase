@@ -6,42 +6,24 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
 ---
-# Development Profile (H2)
+# Development Profile
 spring:
   config:
     activate:
       on-profile: dev
-  datasource:
-    url: jdbc:h2:mem:ecommerce_db
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  data:
+    mongodb:
+      uri: mongodb+srv://deepmodi670_db_user:rentmojo12345@cluster0.1smantl.mongodb.net/technova?appName=Cluster0
 
 ---
-# Production Profile (PostgreSQL)
+# Production Profile
 spring:
   config:
     activate:
       on-profile: prod
-  datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: false
+  data:
+    mongodb:
+      uri: ${DATABASE_URL}
 
 server:
   port: ${PORT:8080}

@@ -41,7 +41,7 @@ public class OrderController {
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<OrderDto.OrderResponse> cancelOrder(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long orderId,
+            @PathVariable String orderId,
             @RequestBody OrderDto.CancelOrderRequest request
     ) {
         return ResponseEntity.ok(orderService.cancelOrder(userDetails.getUsername(), orderId, request.getReason()));

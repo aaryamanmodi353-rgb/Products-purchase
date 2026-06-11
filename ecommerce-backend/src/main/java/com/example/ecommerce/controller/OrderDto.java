@@ -22,7 +22,7 @@ public class OrderDto {
     @NoArgsConstructor
     public static class OrderItemRequest {
         @NotNull(message = "Product ID is required")
-        private Long productId;
+        private String productId;
 
         @NotNull(message = "Quantity is required")
         @Min(value = 1, message = "Quantity must be at least 1")
@@ -55,8 +55,8 @@ public class OrderDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class OrderItemResponse {
-        private Long id;
-        private Long productId;
+        private String id;
+        private String productId;
         private String productName;
         private String productImageUrl;
         private Integer quantity;
@@ -68,7 +68,7 @@ public class OrderDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class OrderResponse {
-        private Long id;
+        private String id;
         private List<OrderItemResponse> items;
         private BigDecimal totalAmount;
         private String status;
