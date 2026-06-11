@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ecommerce-backend
+    env: docker
+    dockerContext: ecommerce-backend
+    dockerfilePath: ecommerce-backend/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        sync: false
+    region: ohio
+    plan: free
