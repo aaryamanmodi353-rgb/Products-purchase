@@ -20,6 +20,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthDto.AuthenticationResponse register(AuthDto.RegisterRequest request) {
+        if (repository.findFirstByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists. Please sign in instead.");
+        }
+
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -42,8 +46,8 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = repository.findFirstByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
         var jwtToken = jwtService.generateToken(user);
         return AuthDto.AuthenticationResponse.builder()
                 .token(jwtToken)
