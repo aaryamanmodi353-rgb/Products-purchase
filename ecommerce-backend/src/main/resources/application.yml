@@ -13,7 +13,7 @@ spring:
       on-profile: dev
   data:
     mongodb:
-      uri: mongodb+srv://deepmodi670_db_user:rentmojo12345@cluster0.1smantl.mongodb.net/technova?appName=Cluster0
+      uri: "mongodb+srv://deepmodi670_db_user:rentmojo12345@cluster0.1smantl.mongodb.net/technova?appName=Cluster0"
 
 ---
 # Production Profile
