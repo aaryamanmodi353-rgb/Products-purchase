@@ -19,9 +19,6 @@ public class OrderItem {
     @Builder.Default
     private String id = UUID.randomUUID().toString();
 
-    @JsonIgnore
-    private CustomerOrder order;
-
     @DBRef
     private Product product;
 

@@ -61,7 +61,6 @@ public class OrderService {
             productRepository.save(product);
 
             OrderItem item = OrderItem.builder()
-                    .order(order)
                     .product(product)
                     .quantity(itemReq.getQuantity())
                     .priceAtPurchase(product.getPrice())
