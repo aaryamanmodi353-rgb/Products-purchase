@@ -29,7 +29,7 @@ export default function CartPage() {
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
-  const [upiScanned, setUpiScanned] = useState(false);
+
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -274,34 +274,25 @@ export default function CartPage() {
                     {/* UPI QR Code Flow */}
                     {paymentMethod === "UPI" && (
                       <div className="space-y-4 flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800/50 animate-in fade-in zoom-in-95 duration-200">
-                        {!upiScanned ? (
-                          <>
-                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=technova@upi&pn=TechNova`} alt="UPI QR Code" className="w-32 h-32 rounded-lg" />
-                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">Scan this QR code with any UPI app to pay</p>
-                            <button onClick={() => setUpiScanned(true)} className="mt-2 text-sm bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:hover:bg-indigo-900 transition">
-                              Simulate Scan & Pay
-                            </button>
-                          </>
-                        ) : (
-                          <div className="text-center space-y-2 text-green-600 dark:text-green-400 animate-in zoom-in duration-300">
-                             <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-2">
-                               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                             </div>
-                             <p className="font-semibold">Payment Confirmed!</p>
-                             <button onClick={() => setUpiScanned(false)} className="text-xs underline text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">Reset</button>
-                          </div>
-                        )}
+                        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=technova@upi&pn=TechNova`} alt="UPI QR Code" className="w-32 h-32 rounded-lg" />
+                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">Scan this QR code with any UPI app to pay</p>
+                        <button onClick={handleCheckout} disabled={loading} className="mt-2 flex items-center gap-2 text-sm bg-indigo-100 text-indigo-700 px-6 py-2.5 rounded-xl font-semibold hover:bg-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:hover:bg-indigo-900 transition disabled:opacity-50">
+                          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                          {loading ? "Processing Payment..." : "Simulate Scan & Pay"}
+                        </button>
                       </div>
                     )}
                   </div>
 
                   {error && <p className="text-red-500 text-xs font-medium bg-red-50 dark:bg-red-900/20 p-2 rounded-lg">{error}</p>}
 
-                  <button onClick={handleCheckout} disabled={loading || (paymentMethod === 'UPI' && !upiScanned)}
-                    className="w-full flex justify-center items-center gap-2 rounded-xl bg-green-600 py-3 text-sm font-semibold text-white hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg">
-                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    {loading ? "Processing..." : `Pay $${totalPrice.toFixed(2)}`}
-                  </button>
+                  {paymentMethod !== "UPI" && (
+                    <button onClick={handleCheckout} disabled={loading}
+                      className="w-full flex justify-center items-center gap-2 rounded-xl bg-green-600 py-3 text-sm font-semibold text-white hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg">
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                      {loading ? "Processing..." : `Pay $${totalPrice.toFixed(2)}`}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
