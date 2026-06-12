@@ -26,7 +26,15 @@ export default function RegisterPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Registration failed");
+        let msg = "Registration failed";
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          msg = data.message || data.error || msg;
+        } catch {
+          msg = text || msg;
+        }
+        throw new Error(msg);
       }
 
       const data = await res.json();

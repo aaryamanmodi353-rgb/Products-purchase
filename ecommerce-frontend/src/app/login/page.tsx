@@ -25,7 +25,15 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Invalid credentials");
+        let msg = "Invalid credentials";
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          msg = data.message || data.error || msg;
+        } catch {
+          msg = text || msg;
+        }
+        throw new Error(msg);
       }
 
       const data = await res.json();
