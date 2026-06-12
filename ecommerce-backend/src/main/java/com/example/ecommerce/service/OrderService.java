@@ -35,8 +35,12 @@ public class OrderService {
             throw new RuntimeException("Order must contain at least one item");
         }
 
-        User user = userRepository.findByEmail(userEmail)
+        User user = userRepository.findFirstByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getAddress() == null || user.getAddress().trim().isEmpty()) {
+            throw new RuntimeException("You must add a shipping address in your Profile Settings before checking out.");
+        }
 
         CustomerOrder order = CustomerOrder.builder()
                 .user(user)
@@ -77,7 +81,7 @@ public class OrderService {
     }
 
     public List<OrderDto.OrderResponse> getUserOrders(String userEmail) {
-        User user = userRepository.findByEmail(userEmail)
+        User user = userRepository.findFirstByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return orderRepository.findByUserOrderByCreatedAtDesc(user)
                 .stream()
@@ -86,7 +90,7 @@ public class OrderService {
     }
 
     public OrderDto.OrderResponse cancelOrder(String userEmail, String orderId, String reason) {
-        User user = userRepository.findByEmail(userEmail)
+        User user = userRepository.findFirstByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         CustomerOrder order = orderRepository.findById(orderId)
