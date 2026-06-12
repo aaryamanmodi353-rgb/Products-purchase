@@ -90,7 +90,7 @@ export default function CartPage() {
 
     try {
       // First, silently save their address to their profile
-      await fetch(`${API_URL}/api/users/profile`, {
+      const putRes = await fetch(`${API_URL}/api/users/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -98,6 +98,10 @@ export default function CartPage() {
         },
         body: JSON.stringify({ address: address.trim() }),
       });
+      
+      if (!putRes.ok) {
+        throw new Error("Failed to save shipping address");
+      }
 
       // Then process the order
       const res = await fetch(`${API_URL}/api/orders`, {
@@ -117,7 +121,7 @@ export default function CartPage() {
         const text = await res.text();
         try {
           const data = JSON.parse(text);
-          msg = data.error || data.message || msg;
+          msg = data.message || data.error || msg;
         } catch {
           msg = text || msg;
         }

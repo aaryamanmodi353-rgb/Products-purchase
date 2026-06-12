@@ -34,8 +34,12 @@ public class UserService {
         if (request.getName() != null && !request.getName().trim().isEmpty()) {
             user.setName(request.getName().trim());
         }
-        user.setAddress(request.getAddress());
-        user.setInterests(request.getInterests());
+        if (request.getAddress() != null) {
+            user.setAddress(request.getAddress());
+        }
+        if (request.getInterests() != null) {
+            user.setInterests(request.getInterests());
+        }
 
         User updatedUser = userRepository.save(user);
 
