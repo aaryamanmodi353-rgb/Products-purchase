@@ -3,7 +3,7 @@
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { Trash2, Minus, Plus, ShoppingBag, CreditCard, Smartphone, Building2, Truck, ArrowLeft } from "lucide-react";
+import { Trash2, Minus, Plus, ShoppingBag, CreditCard, Smartphone, Building2, Truck, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { API_URL } from "@/lib/constants";
@@ -22,16 +22,49 @@ export default function CartPage() {
   const router = useRouter();
 
   const [showCheckout, setShowCheckout] = useState(false);
+  const [fetchingProfile, setFetchingProfile] = useState(false);
+  const [address, setAddress] = useState("");
+  
   const [paymentMethod, setPaymentMethod] = useState("CREDIT_CARD");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+  const [upiScanned, setUpiScanned] = useState(false);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const handleProceed = async () => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    
+    setFetchingProfile(true);
+    try {
+      const res = await fetch(`${API_URL}/api/users/profile`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAddress(data.address || "");
+      }
+    } catch (e) {
+      // Ignore fetch errors, user can just type address manually
+    } finally {
+      setFetchingProfile(false);
+      setShowCheckout(true);
+    }
+  };
 
   const handleCheckout = async () => {
     if (!user) {
       router.push("/login");
+      return;
+    }
+
+    if (!address.trim()) {
+      setError("Please enter a shipping address to deliver your order.");
       return;
     }
 
@@ -56,6 +89,17 @@ export default function CartPage() {
     setError("");
 
     try {
+      // First, silently save their address to their profile
+      await fetch(`${API_URL}/api/users/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ address: address.trim() }),
+      });
+
+      // Then process the order
       const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: {
@@ -169,46 +213,89 @@ export default function CartPage() {
               </div>
 
               {!showCheckout ? (
-                <button onClick={() => { if (!user) { router.push("/login"); } else { setShowCheckout(true); } }}
-                  className="mt-6 w-full rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white hover:bg-indigo-500 transition shadow-lg">
+                <button onClick={handleProceed} disabled={fetchingProfile}
+                  className="mt-6 w-full flex justify-center items-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white hover:bg-indigo-500 transition shadow-lg disabled:opacity-70">
+                  {fetchingProfile ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                   Proceed to Checkout
                 </button>
               ) : (
-                <div className="mt-6 space-y-4">
-                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Payment Method</h4>
-                  <div className="space-y-2">
-                    {PAYMENT_METHODS.map((pm) => (
-                      <button key={pm.id} onClick={() => setPaymentMethod(pm.id)}
-                        className={`w-full flex items-center gap-3 rounded-xl border-2 px-3 py-2.5 transition text-sm font-medium ${
-                          paymentMethod === pm.id
-                            ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300"
-                            : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-400"
-                        }`}>
-                        <pm.icon className="h-4 w-4" /> {pm.label}
-                      </button>
-                    ))}
+                <div className="mt-6 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  {/* Address Section */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Shipping Address</h4>
+                    <textarea 
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Enter your full delivery address..."
+                      rows={3}
+                      className="w-full rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600 resize-none transition"
+                    />
                   </div>
 
-                  {(paymentMethod === "CREDIT_CARD" || paymentMethod === "DEBIT_CARD") && (
+                  <hr className="border-gray-100 dark:border-gray-800" />
+
+                  {/* Payment Method Section */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Payment Method</h4>
                     <div className="space-y-2">
-                      <input type="text" placeholder="Card Number" maxLength={19} value={cardNumber}
-                        onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim())}
-                        className="w-full rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600" />
-                      <div className="grid grid-cols-2 gap-2">
-                        <input type="text" placeholder="MM/YY" maxLength={5} value={cardExpiry}
-                          onChange={(e) => setCardExpiry(e.target.value)}
-                          className="rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600" />
-                        <input type="text" placeholder="CVV" maxLength={4} value={cardCvv}
-                          onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, ""))}
-                          className="rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600" />
-                      </div>
+                      {PAYMENT_METHODS.map((pm) => (
+                        <button key={pm.id} onClick={() => { setPaymentMethod(pm.id); setError(""); }}
+                          className={`w-full flex items-center gap-3 rounded-xl border-2 px-3 py-2.5 transition text-sm font-medium ${
+                            paymentMethod === pm.id
+                              ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300"
+                              : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-400"
+                          }`}>
+                          <pm.icon className="h-4 w-4" /> {pm.label}
+                        </button>
+                      ))}
                     </div>
-                  )}
 
-                  {error && <p className="text-red-500 text-xs">{error}</p>}
+                    {/* Credit Card Details */}
+                    {(paymentMethod === "CREDIT_CARD" || paymentMethod === "DEBIT_CARD") && (
+                      <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
+                        <input type="text" placeholder="Card Number" maxLength={19} value={cardNumber}
+                          onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim())}
+                          className="w-full rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600" />
+                        <div className="grid grid-cols-2 gap-2">
+                          <input type="text" placeholder="MM/YY" maxLength={5} value={cardExpiry}
+                            onChange={(e) => setCardExpiry(e.target.value)}
+                            className="rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600" />
+                          <input type="text" placeholder="CVV" maxLength={4} value={cardCvv}
+                            onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, ""))}
+                            className="rounded-xl border-0 py-2.5 px-3 text-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-indigo-600" />
+                        </div>
+                      </div>
+                    )}
 
-                  <button onClick={handleCheckout} disabled={loading}
-                    className="w-full rounded-xl bg-green-600 py-3 text-sm font-semibold text-white hover:bg-green-500 disabled:opacity-50 transition shadow-lg">
+                    {/* UPI QR Code Flow */}
+                    {paymentMethod === "UPI" && (
+                      <div className="space-y-4 flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800/50 animate-in fade-in zoom-in-95 duration-200">
+                        {!upiScanned ? (
+                          <>
+                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=technova@upi&pn=TechNova`} alt="UPI QR Code" className="w-32 h-32 rounded-lg" />
+                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">Scan this QR code with any UPI app to pay</p>
+                            <button onClick={() => setUpiScanned(true)} className="mt-2 text-sm bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:hover:bg-indigo-900 transition">
+                              Simulate Scan & Pay
+                            </button>
+                          </>
+                        ) : (
+                          <div className="text-center space-y-2 text-green-600 dark:text-green-400 animate-in zoom-in duration-300">
+                             <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-2">
+                               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                             </div>
+                             <p className="font-semibold">Payment Confirmed!</p>
+                             <button onClick={() => setUpiScanned(false)} className="text-xs underline text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">Reset</button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {error && <p className="text-red-500 text-xs font-medium bg-red-50 dark:bg-red-900/20 p-2 rounded-lg">{error}</p>}
+
+                  <button onClick={handleCheckout} disabled={loading || (paymentMethod === 'UPI' && !upiScanned)}
+                    className="w-full flex justify-center items-center gap-2 rounded-xl bg-green-600 py-3 text-sm font-semibold text-white hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg">
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                     {loading ? "Processing..." : `Pay $${totalPrice.toFixed(2)}`}
                   </button>
                 </div>
