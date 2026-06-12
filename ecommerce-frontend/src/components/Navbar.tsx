@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun, ShoppingCart, User, Shield, Package, LogOut, PackagePlus, ChevronDown, UserCircle } from "lucide-react";
+import { Moon, Sun, ShoppingCart, User, Shield, Package, LogOut, PackagePlus, ChevronDown, UserCircle, Settings } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
@@ -111,6 +111,11 @@ export default function Navbar() {
                           <Shield className="h-4 w-4 text-gray-400" /> Admin Dashboard
                         </Link>
                       )}
+
+                      <Link href="/settings" onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                        <Settings className="h-4 w-4 text-gray-400" /> Profile Settings
+                      </Link>
                     </div>
 
                     <div className="border-t border-gray-100 dark:border-gray-800 py-1">
