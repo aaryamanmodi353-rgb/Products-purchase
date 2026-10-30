@@ -274,17 +274,17 @@ export default function ProductCatalog() {
               <Link
                 key={category.name}
                 href={"/products/" + category.product.id}
-                className="group flex flex-col items-center text-center focus-visible:outline-none"
+                className="category-tile-link group flex flex-col items-center text-center focus-visible:outline-none"
               >
-                <span className="relative mb-5 block aspect-square w-full max-w-[15rem] rounded-full border border-[#d5dbce] bg-[#e9e9df] p-2 shadow-[0_12px_30px_-20px_rgba(31,55,43,0.5)] transition duration-500 group-hover:-translate-y-1 group-hover:border-[#8fa18d] group-hover:shadow-[0_18px_38px_-20px_rgba(31,55,43,0.45)] group-focus-visible:ring-2 group-focus-visible:ring-[#315b43] group-focus-visible:ring-offset-4">
-                  <span className="block h-full w-full overflow-hidden rounded-full bg-[#f6f4ea]">
+                <span className="category-artwork relative mb-5 block aspect-square w-full max-w-[17rem] rounded-full border border-[#d5dbce] bg-[#e9e9df] p-2.5 group-focus-visible:ring-2 group-focus-visible:ring-[#315b43] group-focus-visible:ring-offset-4">
+                  <span className="category-artwork-inner block h-full w-full overflow-hidden rounded-full bg-[#f6f4ea]">
                     <img
                       src={category.imageProduct.imageUrl}
                       alt={category.imageProduct.name}
-                      className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+                      className="category-artwork-image h-full w-full object-cover"
                     />
                   </span>
-                  <span className="absolute bottom-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-[#d5dbce] bg-[#f7f5eb] text-[#315b43] shadow-sm transition duration-300 group-hover:border-[#315b43] group-hover:bg-[#315b43] group-hover:text-white">
+                  <span className="category-artwork-arrow absolute bottom-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-[#d5dbce] bg-[#f7f5eb] text-[#315b43] shadow-sm transition duration-300 group-hover:border-[#315b43] group-hover:bg-[#315b43] group-hover:text-white">
                     <ArrowUpRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
                 </span>
