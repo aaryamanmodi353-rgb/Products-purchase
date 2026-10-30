@@ -70,6 +70,15 @@ body {
   font-family: var(--font-dancing-script), "Segoe Script", "Brush Script MT", cursive;
 }
 
+.hero-title-dash {
+  display: inline-block;
+  width: 0.3em;
+  height: 0.045em;
+  margin-inline: 0.055em;
+  vertical-align: 0.18em;
+  background: currentColor;
+}
+
 .category-tile-link {
   perspective: 1100px;
 }

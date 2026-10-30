@@ -30,18 +30,18 @@ export default function Home() {
             <h1
               id="home-title"
               aria-label="Next-Gen Tech. Delivered Tomorrow."
-              className="font-editorial max-w-[11ch] text-balance text-[clamp(3.5rem,7vw,6.6rem)] leading-[0.9] tracking-[-0.055em] text-[#fffdf6]"
+              className="font-editorial max-w-[11ch] text-balance text-[clamp(3.25rem,5.4vw,5.6rem)] leading-[0.94] tracking-[-0.045em] text-[#fffdf6]"
             >
               <span className="block">
                 <span className="whitespace-nowrap">
-                  Next<span className="font-sans relative -top-[0.04em] text-[0.86em] font-light tracking-normal">-</span>Gen
+                  Next<span aria-hidden="true" className="hero-title-dash" />Gen
                 </span>{" "}Tech.
               </span>
               <span className="mt-2 block text-[#c5d1b6]">
-                <span className="font-script block text-[1.06em] font-medium leading-[0.84] tracking-normal">
+                <span className="font-script block text-[1em] font-medium leading-[0.9] tracking-normal">
                   Delivered
                 </span>
-                <span className="font-script mt-1 block text-[1.06em] font-medium leading-[0.84] tracking-normal">
+                <span className="font-script mt-1 block text-[1em] font-medium leading-[0.9] tracking-normal">
                   Tomorrow.
                 </span>
               </span>
