@@ -38,7 +38,7 @@
   --color-indigo-800: #213d2f;
   --color-indigo-900: #1b3328;
   --color-indigo-950: #14251b;
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-cormorant);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -58,7 +58,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-cormorant), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
 }
 
 .font-editorial {
