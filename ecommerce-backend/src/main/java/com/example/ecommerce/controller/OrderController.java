@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -38,12 +39,34 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrders(userDetails.getUsername()));
     }
 
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto.OrderResponse> getOrder(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable String orderId
+    ) {
+        return ResponseEntity.ok(orderService.getOrder(userDetails.getUsername(), orderId));
+    }
+
+    @PostMapping("/{orderId}/returns")
+    public ResponseEntity<OrderDto.ReturnRequestResponse> createReturnRequest(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable String orderId,
+            @Valid @RequestBody OrderDto.CreateReturnRequest request
+    ) {
+        var result = orderService.createReturnRequest(userDetails.getUsername(), orderId, request);
+        if (result.created()) {
+            return ResponseEntity.created(URI.create("/api/returns/" + result.response().id()))
+                    .body(result.response());
+        }
+        return ResponseEntity.ok(result.response());
+    }
+
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<OrderDto.OrderResponse> cancelOrder(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable String orderId,
-            @RequestBody OrderDto.CancelOrderRequest request
+            @Valid @RequestBody OrderDto.CancelOrderRequest request
     ) {
-        return ResponseEntity.ok(orderService.cancelOrder(userDetails.getUsername(), orderId, request.getReason()));
+        return ResponseEntity.ok(orderService.cancelOrder(userDetails.getUsername(), orderId, request.reason()));
     }
 }

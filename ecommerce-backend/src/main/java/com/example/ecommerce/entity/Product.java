@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 
@@ -28,4 +29,16 @@ public class Product {
     private String imageUrl;
 
     private Integer stockQuantity;
+
+    private String sku;
+
+    private String catalogSource;
+
+    private Long catalogVersion;
+
+    @JsonIgnore
+    private String commercetoolsId;
+
+    @JsonIgnore
+    private String commercetoolsKey;
 }

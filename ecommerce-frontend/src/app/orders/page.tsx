@@ -7,8 +7,8 @@ import { Package, XCircle, CheckCircle, Clock, X } from "lucide-react";
 import { API_URL } from "@/lib/constants";
 
 interface OrderItem {
-  id: number;
-  productId: number;
+  id: string;
+  productId: string;
   productName: string;
   productImageUrl: string;
   quantity: number;
@@ -16,7 +16,7 @@ interface OrderItem {
 }
 
 interface Order {
-  id: number;
+  id: string;
   items: OrderItem[];
   totalAmount: number;
   status: string;
@@ -40,7 +40,7 @@ function OrdersContent() {
   const [successMessage, setSuccessMessage] = useState("");
 
   // Cancel modal state
-  const [cancellingOrderId, setCancellingOrderId] = useState<number | null>(null);
+  const [cancellingOrderId, setCancellingOrderId] = useState<string | null>(null);
   const [cancelReason, setCancelReason] = useState("");
   const [cancelError, setCancelError] = useState("");
 

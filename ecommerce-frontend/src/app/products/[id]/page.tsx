@@ -7,7 +7,7 @@ import { ShoppingCart, CreditCard, Smartphone, Building2, Truck, ArrowLeft } fro
 import { API_URL } from "@/lib/constants";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   description: string;
   price: number;

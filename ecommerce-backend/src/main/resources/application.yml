@@ -1,9 +1,26 @@
 spring:
+  config:
+    import: optional:file:./.env[.properties]
   application:
     name: ecommerce-backend
 
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  data:
+    mongodb:
+      auto-index-creation: true
+
+commercetools:
+  project-key: ${COMMERCETOOLS_PROJECT_KEY:springbootkey12}
+  client-id: ${COMMERCETOOLS_CLIENT_ID:}
+  client-secret: ${COMMERCETOOLS_CLIENT_SECRET:}
+  api-url: ${COMMERCETOOLS_API_URL:}
+  auth-url: ${COMMERCETOOLS_AUTH_URL:}
+  scope: ${COMMERCETOOLS_SCOPE:}
+  product-type-id: ${COMMERCETOOLS_PRODUCT_TYPE_ID:}
+  locale: ${COMMERCETOOLS_LOCALE:en-US}
+  currency: ${COMMERCETOOLS_CURRENCY:USD}
 
 ---
 # Development Profile
@@ -13,7 +30,7 @@ spring:
       on-profile: dev
   data:
     mongodb:
-      uri: "mongodb+srv://deepmodi670_db_user:rentmojo12345@cluster0.1smantl.mongodb.net/technova?appName=Cluster0"
+      uri: "${DATABASE_URL:mongodb://localhost:27017/technova}"
 
 ---
 # Production Profile

@@ -2,6 +2,10 @@
 ecommerce-backend/target/
 ecommerce-backend/.idea/
 ecommerce-backend/*.iml
+ecommerce-backend/.env
+ecommerce-backend/.env.*
+ecommerce-backend/.env.example
+
 
 # Frontend
 ecommerce-frontend/node_modules/

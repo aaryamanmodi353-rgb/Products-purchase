@@ -1,34 +1,92 @@
-import ProductCatalog from '@/components/ProductCatalog';
+import Image from "next/image";
+import ProductCatalog from "@/components/ProductCatalog";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Hero Section */}
-      <div className="relative bg-indigo-900 overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&q=80"
-            alt="Hero background"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-900 to-transparent mix-blend-multiply"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 flex flex-col items-start">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl text-left">
-            Next-Gen Tech.<br/> Delivered Tomorrow.
-          </h1>
-          <p className="mt-6 text-xl text-indigo-100 max-w-3xl text-left">
-            Discover the latest in premium electronics, gaming gear, and smart home devices. Curated for enthusiasts.
-          </p>
-          <div className="mt-10">
-            <a href="#catalog" className="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-indigo-50 transition-colors shadow-lg">
-              Shop Now
+    <main className="min-h-screen bg-background text-foreground">
+      <section
+        aria-labelledby="home-title"
+        className="relative isolate min-h-[610px] overflow-hidden bg-[#14271e] text-[#f8f5ea] sm:min-h-[650px] lg:min-h-[690px]"
+      >
+        <Image
+          src="/technova-home-studio-hero.png"
+          alt="Forest-green wireless headphones displayed in a warmly lit modern listening space"
+          fill
+          priority
+          unoptimized
+          sizes="100vw"
+          className="object-cover object-[62%_center] lg:object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#12251c] via-[#12251c]/90 to-[#12251c]/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#12251c]/70 via-transparent to-[#12251c]/15" />
+
+        <div className="relative mx-auto flex min-h-[610px] max-w-7xl flex-col justify-center px-5 pb-14 pt-16 sm:min-h-[650px] sm:px-8 lg:min-h-[690px] lg:px-10">
+          <div className="max-w-[42rem]">
+            <p className="mb-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d9dfd2] sm:text-xs">
+              <span className="h-px w-8 bg-[#b8c6a8]" />
+              TechNova · Curated technology
+            </p>
+
+            <h1
+              id="home-title"
+              aria-label="Next-Gen Tech. Delivered Tomorrow."
+              className="font-editorial max-w-[11ch] text-balance text-[clamp(3.5rem,7vw,6.6rem)] leading-[0.9] tracking-[-0.055em] text-[#fffdf6]"
+            >
+              <span className="block">
+                <span className="whitespace-nowrap">
+                  Next<span className="font-sans relative -top-[0.04em] text-[0.86em] font-light tracking-normal">-</span>Gen
+                </span>{" "}Tech.
+              </span>
+              <span className="mt-2 block text-[#c5d1b6]">
+                <span className="font-script block text-[1.06em] font-medium leading-[0.84] tracking-normal">
+                  Delivered
+                </span>
+                <span className="font-script mt-1 block text-[1.06em] font-medium leading-[0.84] tracking-normal">
+                  Tomorrow.
+                </span>
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-md text-sm leading-7 text-[#e1e4da] sm:text-base">
+              Discover the latest in premium electronics, gaming gear, and smart
+              home devices. Curated for enthusiasts.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href="#catalog-products"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#e8edda] px-6 text-sm font-semibold text-[#203d2d] shadow-lg shadow-black/10 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#c5d1b6]/50"
+              >
+                Shop now
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a
+                href="#collections"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/45 px-6 text-sm font-semibold text-white transition hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/20"
+              >
+                Explore collections
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-12 flex max-w-2xl flex-wrap gap-x-7 gap-y-3 border-t border-white/25 pt-5 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#e0e5d8] sm:gap-x-9 sm:text-[10px]">
+            <a href="#collections" className="transition hover:text-white">
+              Audio
+            </a>
+            <a href="#collections" className="transition hover:text-white">
+              Gaming
+            </a>
+            <a href="#collections" className="transition hover:text-white">
+              Displays
+            </a>
+            <a href="#collections" className="transition hover:text-white">
+              Smart living
             </a>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div id="catalog">
+      <div id="catalog" className="scroll-mt-28">
         <ProductCatalog />
       </div>
     </main>

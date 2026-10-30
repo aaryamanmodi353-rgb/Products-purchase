@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +37,12 @@ public class CustomerOrder {
     private PaymentMethod paymentMethod;
 
     private LocalDateTime createdAt;
+
+    private Instant deliveredAt;
+
+    private String carrier;
+
+    private String trackingNumber;
 
     private String cancelReason;
 }

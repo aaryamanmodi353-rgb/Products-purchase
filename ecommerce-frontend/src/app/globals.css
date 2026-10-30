@@ -1,26 +1,116 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f1e8;
+  --foreground: #23382c;
+  --surface: #fbfaf5;
+  --surface-muted: #e9e8dc;
+  --border: #d7ddcf;
+  --muted: #687468;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-muted-foreground: var(--muted);
+  --color-gray-50: #f7f7ef;
+  --color-gray-100: #eeefe5;
+  --color-gray-200: #dfe3d7;
+  --color-gray-300: #cdd5c8;
+  --color-gray-400: #9da99b;
+  --color-gray-500: #748174;
+  --color-gray-600: #5b695e;
+  --color-gray-700: #445448;
+  --color-gray-800: #2c3e32;
+  --color-gray-900: #22362a;
+  --color-gray-950: #14251b;
+  --color-indigo-50: #eef2e9;
+  --color-indigo-100: #e1e9dc;
+  --color-indigo-200: #cbd8c5;
+  --color-indigo-300: #b2c5aa;
+  --color-indigo-400: #8fa98e;
+  --color-indigo-500: #6f8c72;
+  --color-indigo-600: #315b43;
+  --color-indigo-700: #284b38;
+  --color-indigo-800: #213d2f;
+  --color-indigo-900: #1b3328;
+  --color-indigo-950: #14251b;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #17241b;
+  --foreground: #eeeede;
+  --surface: #202d23;
+  --surface-muted: #29382d;
+  --border: #3b4d3e;
+  --muted: #b1bcae;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.font-editorial {
+  font-family: var(--font-cormorant), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+}
+
+.font-script {
+  font-family: var(--font-dancing-script), "Segoe Script", "Brush Script MT", cursive;
+}
+
+.featured-carousel-track {
+  scrollbar-color: #315b43 #dfe3d8;
+  scrollbar-width: thin;
+  scroll-padding-inline: 2px;
+}
+
+.featured-carousel-track::-webkit-scrollbar {
+  height: 7px;
+}
+
+.featured-carousel-track::-webkit-scrollbar-track {
+  margin-inline: 2px;
+  border-radius: 999px;
+  background: #dfe3d8;
+}
+
+.featured-carousel-track::-webkit-scrollbar-thumb {
+  border: 1px solid #dfe3d8;
+  border-radius: 999px;
+  background: #315b43;
+}
+
+.dark .featured-carousel-track {
+  scrollbar-color: #78927c #354238;
+}
+
+.dark .featured-carousel-track::-webkit-scrollbar-track {
+  background: #354238;
+}
+
+.dark .featured-carousel-track::-webkit-scrollbar-thumb {
+  border-color: #354238;
+  background: #78927c;
+}
+
+::selection {
+  background: #315b43;
+  color: #fbfaf5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
